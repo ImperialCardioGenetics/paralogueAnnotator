@@ -30,6 +30,8 @@ my $familyA = $reg->get_adaptor("Multi", "compara", "Family");
 my $seqmemberA = $reg->get_adaptor("Multi", "compara", "SeqMember");
 my $slice_adaptor = $reg->get_adaptor("Human", "core", "Slice");
 my $transcript_adaptor = $reg->get_adaptor("Human", "core", "Transcript");
+my $vf_adaptor = $reg->get_adaptor('human', 'variation', 'variationfeature');
+my $pa = $reg->get_adaptor("human","variation","phenotype");
 
 
 print "Enter chromosome of variant: ";
@@ -87,17 +89,17 @@ foreach my $homology (@{$homologies}) {
 $n = $n+1;
 }
 
-print "Which homology (enter number) \n";
-my $homology_input = <STDIN>;
-chomp($homology_input);
+print "Which homology (enter number) \n"; 
+my $homology_input = <STDIN>; 
+chomp($homology_input); 
 
-my $selectedhomology = $homologies->[$homology_input];
+my $selectedhomology = $homologies->[$homology_input]; 
 my $simplealign = $selectedhomology->get_SimpleAlign();
 my $simplealignCDS = $selectedhomology->get_SimpleAlign(-seq_type => 'cds');
 
 my @selmembers = (@{$selectedhomology->get_all_Members});
 
-foreach my $example (@members) {
+foreach my $example (@selmembers) {
 				my $ENSP = $example->stable_id;
 				my $gene = $hg_adaptor->fetch_by_translation_stable_id($ENSP);
 				my $trans = $example->get_Transcript;
@@ -191,20 +193,50 @@ my @pos2bp_coords = $trmapper2->pep2genomic($pos2pep_start,$pos2pep_start);
 foreach my $var (@pos2bp_coords){
 	$coordhash = $var;
 	#print $coordhash;
+
+
+
 }
 
 my $slice2 = $slice_adaptor->fetch_by_transcript_stable_id($member2Tid);
-my $coord_sys  = $slice2->coord_system()->name();
+my $coord_sys2  = $slice2->coord_system()->name();
 my $slice2_chr = $slice2->seq_region_name();
+
+my $codon_start = $coordhash->start;
+my $codon_end = $coordhash->end;
 	
-print "Genomic coords of homologous codon in $seq2Pid: " . $coord_sys . " " . $slice2_chr . ":" . $coordhash->start . "-" . $coordhash->end . "\n";	
+print "Genomic coords of homologous codon in $seq2Pid: " . $coord_sys2 . " " . $slice2_chr . ":" . $coordhash->start . "-" . $coordhash->end . "\n";	
 	
 my %count;
 foreach my $seq ($simplealign->each_seq) {
    	my $seqatlocation = $seq->subseq($col, $col);
    	$count{$seqatlocation}++;
+   	my $name = $seq->display_id;
+   	print $name,": ", $seqatlocation, "\n";
 }
 
-foreach $res (keys %count) {
-	printf "$res: $count{$res}\n";
-}	
+#foreach $res (keys %count) {
+#	printf "$res: $count{$res}\n";
+#}	
+
+print "\n";
+
+my $codon_slice2 = $slice_adaptor->fetch_by_region('chromosome', $slice2_chr, $codon_start, $codon_end);
+foreach my $vf ( @{ $vf_adaptor->fetch_all_by_Slice($codon_slice2) } ) {
+    print $slice2_chr, ":", $vf->seq_region_start(), ' ', $vf->allele_string(), ' ', $vf->variation_name(), ' ', $vf->display_consequence, ' ';
+	my $id = $vf->variation_name();
+	my @csstates = @{$vf->get_all_clinical_significance_states};
+	foreach my $sig ( @csstates ) {
+		print "SIG: " , $sig, ' ';
+	}
+	print "\n";
+#		my @csstates = @{$vf->get_all_clinical_significance_states};
+#		foreach my $sig ( @csstates ) {
+#			print $sig, ' ';
+#		}	
+	
+ }
+ print "\n";
+ 
+ 
+#print $codon_slice2->clinical_significance;
