@@ -36,6 +36,15 @@ my $gene_member_adaptor = Bio::EnsEMBL::Registry->get_adaptor("Multi", "Compara"
 my $homology_adaptor = Bio::EnsEMBL::Registry->get_adaptor("Multi", "Compara", "Homology");
 my $gene_member_adaptor = Bio::EnsEMBL::Registry->get_adaptor("Multi", "Compara", "GeneMember");
 
+my @variants = ();
+my %variation_gene = ();
+my %variation_chr = ();
+my %variation_start = ();
+my %variation_allele = ();
+my %variation_name = ();
+my %variation_cons = ();
+
+
 print "Enter chromosome of variant: ";
 my $chr_input = <STDIN>;
 chomp($chr_input);
@@ -73,6 +82,7 @@ foreach my $homology (@{$homologies}) {
 	my %trmapper = (); 
 	my %peptide = ();
 	my %peptide_start = ();
+	my %resatlocation = ();
 
 	
 	#Are both members human?	
@@ -91,7 +101,7 @@ foreach my $homology (@{$homologies}) {
 		
 		foreach my $example (@members) {
 
-			my $ENSP = $example->stable_id;
+			my $ENSP = $example->stable_id; 
 			my $gene = $hg_adaptor->fetch_by_translation_stable_id($ENSP);
 			if ($gene->external_name eq $basegene){
 				$ENSPid{$basegene}=$example->stable_id; #confirm using longest trans for all
@@ -144,18 +154,17 @@ foreach my $homology (@{$homologies}) {
 			$codoncoords{$basegene} = $var;
 		}
 		
-		foreach my $seq ($simplealign->each_seq) {
-			my $seqatlocation = $seq->subseq($col, $col);
-			if ($seq->display_id eq $ENSPid{$basegene}) {
-				print $genename{$basegene}, "\t", $ENSPid{$basegene}, "-", $peptide{$basegene}, ": ", $seqatlocation, "\n";
-			} else {
-				print $genename{$para_gene}, "\t", $ENSPid{$para_gene}, "-", $peptide{$para_gene}, ": ", $seqatlocation, "\n"
-			}
-		}
+		$resatlocation{$basegene} = $fullseq{$basegene}->subseq($col, $col);
+		$resatlocation{$para_gene} = $fullseq{$para_gene}->subseq($col, $col);
+	
 		
-		print "\n";
-
-		#***********************************# add filters below
+		if ($resatlocation{$basegene} eq $resatlocation{$para_gene}) {
+			print $genename{$basegene}, "\t", $ENSPid{$basegene}, "-", $peptide{$basegene}, ": ", $resatlocation{$basegene}, "\n";
+			print $genename{$para_gene}, "\t", $ENSPid{$para_gene}, "-", $peptide{$para_gene}, ": ", $resatlocation{$para_gene}, "\n";
+									
+		} else {
+		#	print "AA residues are not equivalent in paralog";
+		}
 		
 		my $codon_start = $codoncoords{$basegene}->start;
 		my $codon_end = $codoncoords{$basegene}->end;
@@ -167,19 +176,40 @@ foreach my $homology (@{$homologies}) {
 
 
 		my $codon_slice2 = $slice_adaptor->fetch_by_region('chromosome', $slice2_chr, $codon_start, $codon_end);
+
+		#Filter and print variants
 		foreach my $vf ( @{ $vf_adaptor->fetch_all_by_Slice($codon_slice2) } ) {
-			print $slice2_chr, ":", $vf->seq_region_start(), ' ', $vf->allele_string(), ' ', $vf->variation_name(), ' ', $vf->display_consequence, ' ';
-			my $id = $vf->variation_name();
 			my @csstates = @{$vf->get_all_clinical_significance_states};
+			my $path = 0;
 			foreach my $sig ( @csstates ) {
 				if ($sig =~ m/pathogenic/) {
-					print "SIG: " , $sig, ' ';
+						$path++;
 				}
 			}
-		}
+				
+			if ($path > 0 || $vf->allele_string() eq "HGMD") {
+				print "\n", $slice2_chr, ":", $vf->seq_region_start(), ' ', $vf->allele_string(), ' ', $vf->variation_name(), ' ', $vf->display_consequence, ' ';
+				foreach my $sig ( @csstates ) {
+					if ($sig =~ m/pathogenic/) {
+						print "SIG: " , $sig, ' ', ;
+					}
+				}		
+				my $id = $vf->variation_name();
+				push @variants, $id;
+				$variation_gene{$id} = $genename{$para_gene};
+				$variation_name{$id} = $vf->variation_name();						
+			}
 	
-		print "\n\n************************\n"
-	}
-}	
-		
+
+		}
+	print "\n\n************************\n";
+	}	
+	
+}		
+print "\nPATHOGENIC VARS IN PARALOGS: ";
+foreach my $ids (@variants) {
+	print "$variation_gene{$ids} $variation_name{$ids}; ";
+}
+print "\n\n";
+
 		
