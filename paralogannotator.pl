@@ -49,7 +49,7 @@ print "Enter chromosome of variant: ";
 my $chr_input = <STDIN>;
 chomp($chr_input);
 
-print "Enter bp location of variant in GR38: "; #based on version of API
+print "Enter bp location of variant in GR38: "; #based on version of API 
 my $bp_input = <STDIN>;
 chomp($bp_input);
 
@@ -93,21 +93,23 @@ foreach my $homology (@{$homologies}) {
 		}
 	}
 
-	#If both members are human 		
+	#If both members are human get homologies and paralogous AAs	
 	if ($hgmembercount == 2){
 		
 		my $simplealign = $homology->get_SimpleAlign(); 
 		print $homology->description,": ";
 		
 		foreach my $example (@members) {
-
+			my %transsum;
 			my $ENSP = $example->stable_id; 
 			my $gene = $hg_adaptor->fetch_by_translation_stable_id($ENSP);
 			if ($gene->external_name eq $basegene){
-				$ENSPid{$basegene}=$example->stable_id; #confirm using longest trans for all
+				$ENSPid{$basegene}=$example->stable_id; 
 				$geneobj{$basegene}=$hg_adaptor->fetch_by_translation_stable_id($ENSP);
 				$genename{$basegene}=$gene->external_name;
 				$trans{$basegene}=$example->get_Transcript;
+				$transsum=$trans{$basegene}->summary_as_hash;
+				$strand{$basegene}=$trans{$basegene}->strand;
 				$ENSTid{$basegene} = $trans{$basegene}->display_id;
 			} else {
 				$para_gene=$gene->external_name;
@@ -119,10 +121,11 @@ foreach my $homology (@{$homologies}) {
 			}
 	
 		}
-		print "$genename{$para_gene} \n";
 
-		$transslice{$basegene} = $slice_adaptor->fetch_by_transcript_stable_id($ENSTid{$basegene}); 
-		$strand{$basegene} = $transslice{$basegene}->strand; 
+		print "$ENSPid{$basegene} \n"; 
+
+		
+		print "Basegene strand:  $strand{$basegene} \n";
 		
 		$trmapper{$basegene} = Bio::EnsEMBL::TranscriptMapper->new($trans{$basegene});   
 		$trmapper{$para_gene} = Bio::EnsEMBL::TranscriptMapper->new($trans{$para_gene});  
@@ -131,7 +134,7 @@ foreach my $homology (@{$homologies}) {
 		$fullseq{$para_gene} = $simplealign->get_seq_by_id($ENSPid{$para_gene});
 
 		my %peptide_coord; 
-		my @coordlist = $trmapper{$basegene}->genomic2pep($bp_input, $bp_input, $strand{$basegene}); 
+		my @coordlist = $trmapper{$basegene}->genomic2pep($bp_input, $bp_input, $strand{$basegene}); #when list has one element how to extract?
 		foreach my $var (@coordlist){
 			$peptide_coord{$basegene} = $var; 
 		}
@@ -157,14 +160,12 @@ foreach my $homology (@{$homologies}) {
 		$resatlocation{$basegene} = $fullseq{$basegene}->subseq($col, $col);
 		$resatlocation{$para_gene} = $fullseq{$para_gene}->subseq($col, $col);
 	
-		
-		if ($resatlocation{$basegene} eq $resatlocation{$para_gene}) {
-			print $genename{$basegene}, "\t", $ENSPid{$basegene}, "-", $peptide{$basegene}, ": ", $resatlocation{$basegene}, "\n";
-			print $genename{$para_gene}, "\t", $ENSPid{$para_gene}, "-", $peptide{$para_gene}, ": ", $resatlocation{$para_gene}, "\n";
-									
-		} else {
-		#	print "AA residues are not equivalent in paralog";
-		}
+		print $genename{$basegene}, "\t", $ENSPid{$basegene}, "-", $peptide{$basegene}, ": ", $resatlocation{$basegene}, "\n";
+		print $genename{$para_gene}, "\t", $ENSPid{$para_gene}, "-", $peptide{$para_gene}, ": ", $resatlocation{$para_gene}, "\n";
+			
+			
+			
+		#fetch variants
 		
 		my $codon_start = $codoncoords{$basegene}->start;
 		my $codon_end = $codoncoords{$basegene}->end;
@@ -173,11 +174,12 @@ foreach my $homology (@{$homologies}) {
 		my $coord_sys2  = $transslice{$para_gene}->coord_system()->name();
 		my $slice2_chr = $transslice{$para_gene}->seq_region_name();
 
-
-
 		my $codon_slice2 = $slice_adaptor->fetch_by_region('chromosome', $slice2_chr, $codon_start, $codon_end);
 
-		#Filter and print variants
+
+
+		#filter variants
+
 		foreach my $vf ( @{ $vf_adaptor->fetch_all_by_Slice($codon_slice2) } ) {
 			my @csstates = @{$vf->get_all_clinical_significance_states};
 			my $path = 0;
@@ -186,26 +188,25 @@ foreach my $homology (@{$homologies}) {
 						$path++;
 				}
 			}
-				
-			if ($path > 0 || $vf->allele_string() eq "HGMD") {
+						
+			if ($path > 0 || $vf->allele_string() eq "HGMD_MUTATION") {
 				print "\n", $slice2_chr, ":", $vf->seq_region_start(), ' ', $vf->allele_string(), ' ', $vf->variation_name(), ' ', $vf->display_consequence, ' ';
 				foreach my $sig ( @csstates ) {
-					if ($sig =~ m/pathogenic/) {
 						print "SIG: " , $sig, ' ', ;
-					}
 				}		
 				my $id = $vf->variation_name();
 				push @variants, $id;
 				$variation_gene{$id} = $genename{$para_gene};
-				$variation_name{$id} = $vf->variation_name();						
+				$variation_name{$id} = $vf->variation_name();				
 			}
-	
-
 		}
 	print "\n\n************************\n";
 	}	
 	
-}		
+}
+
+
+		
 print "\nPATHOGENIC VARS IN PARALOGS: ";
 foreach my $ids (@variants) {
 	print "$variation_gene{$ids} $variation_name{$ids}; ";
