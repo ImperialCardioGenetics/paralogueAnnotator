@@ -21,7 +21,7 @@ For `paraloc` mode:
 perl -I [directory of plugin] [directory of installed VEP] --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] -i [input file path] -o [output file path] --plugin ParalogueAnno_plugin_cleanup,paraloc
 ```
 
-_VEP version 90 used in examples below_
+_VEP version 90 used in example below_
 
 
 ```
