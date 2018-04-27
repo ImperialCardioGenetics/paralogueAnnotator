@@ -28,4 +28,4 @@ _VEP version 90 used in examples below_
 perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offline --cache --dir_cache /home/user -i /home/user/input_file.vcf -o /home/user/output_file.out --plugin ParalogueAnno_plugin_cleanup
 ```
 
-For documentation on getting VEP to run faster please visti http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
+For documentation on getting VEP to run faster please visit http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
