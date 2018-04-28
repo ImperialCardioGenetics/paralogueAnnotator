@@ -39,11 +39,11 @@ For optimal performance, we suggest running VEP offline with a local Ensembl cac
 
 #### Additional `--plugin` options:
 
-`[--plugin ParalogueAnnotation]`(_default_) or `[--plugin ParalogueAnnotation,variants,damaging]`: VEP plugin will run in `variant` mode, outputting damaging variants that appear in every paralogue's equivalent location
+`[--plugin ParalogueAnnotation]`(_default_) or `[--plugin ParalogueAnnotation,variants,damaging]`: VEP plugin will run in __variant__ mode, outputting damaging variants that appear in every paralogue's equivalent location
 
-`[--plugin ParalogueAnnotation,variants,all]`: VEP plugin will run in `variant` mode, outputting ALL variants that appear in every paralogue's equivalent location
+`[--plugin ParalogueAnnotation,variants,all]`: VEP plugin will run in __variant__ mode, outputting ALL variants that appear in every paralogue's equivalent location
 
-`[--plugin ParalogueAnnotation,paraloc]`: VEP plugin will run in `location` mode, outputting the variant's equivalent location (3bp represents AA codon) in each paralogue
+`[--plugin ParalogueAnnotation,paraloc]`: VEP plugin will run in __location__ mode, outputting the variant's equivalent location (3bp represents AA codon) in each paralogue
 
 For example:
 ```
@@ -52,7 +52,7 @@ perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offli
 (_VEP version 90 used in example above_)
 
 
-In location mode (option=`paraloc`) the Paralogue_Vars info field gives the following information:
+In __location__ mode (option=`paraloc`) the Paralogue_Vars info field gives the following information:
 
     ParaSym: Symbol of Paralogue Gene
     ParaChr: Chromosome of Paralogue Gene
@@ -68,7 +68,7 @@ In location mode (option=`paraloc`) the Paralogue_Vars info field gives the foll
     example of "paraloc" output for variant chr3:38630420 (in SCN5A)
     |SCN10A:chr3_38792157-38792159:V:V:REFID=1|
 
-In variant mode (option=`variants`) the Paralogue_Vars info field gives the following information:
+In __variant__ mode (option=`variants`) the Paralogue_Vars info field gives the following information:
 
     ParaSym: Symbol of Paralogue Gene
     ParaChr: Chromosome of Paralogue Gene
@@ -86,7 +86,7 @@ In variant mode (option=`variants`) the Paralogue_Vars info field gives the foll
     example of "variants" output for variant chr3:38630420 (in SCN5A)
     |SCN10A:chr3_38792158:rs202143516:REFID=1:V/I:V/G|
 
-In `paraloc` mode there will be only one output per paralogue gene; in `variants` mode there may by multiple variants (and therefore outputs) per gene.
+In __location__ mode there will be only one output per paralogue gene; in __variant__ mode there may by multiple variants (and therefore outputs) per gene.
 
 Paralogue variants that are output from this plugin come from dbSNP (which includes ClinVar variants) and HGMD: variants beginning with "rs" come from dbSNP; variants beginning with "C" come from HGMD.
 
