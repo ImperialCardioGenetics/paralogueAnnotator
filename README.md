@@ -10,7 +10,7 @@ Previous publications:
 - [Paralogue annotation identifies novel pathogenic variants in patients with Brugada syndrome and catecholaminergic polymorphic ventricular tachycardia](http://jmg.bmj.com/content/early/2013/10/17/jmedgenet-2013-101917.full)  
 
 
-HOW TO RUN VEP WITH PERL PLUGIN:
+######HOW TO RUN VEP WITH PERL PLUGIN:
 
 General command line usage are as follows. 
 ```
