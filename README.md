@@ -10,22 +10,29 @@ Previous publications:
 - [Paralogue annotation identifies novel pathogenic variants in patients with Brugada syndrome and catecholaminergic polymorphic ventricular tachycardia](http://jmg.bmj.com/content/early/2013/10/17/jmedgenet-2013-101917.full)  
 
 
-###### HOW TO RUN VEP WITH PERL PLUGIN:
+###### How to run VEP with perl plugin:
 
 General command line usage are as follows. 
 ```
 perl -I [directory of plugin] [directory of installed VEP] --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] -i [input file path] -o [output file path] --plugin ParalogueAnno_plugin_cleanup
 ```
 
-WHAT THE OPTIONS INDICATE:
+###### What the arguments indicate:
 
 `-I`: needed to point to location of the plugin (adding to @INC)
+
 `--force_overwrite`: allows you to overwrite the output file
+
 `--vcf`: the format of the input file
+
 `--offline` & `--cache`: both attempt to use the cache, although the offline mode will override when it can't access Compara data
+
 `--dir_cache`: location of our data cache
+
 `-i`: input file
+
 `-o`: output file
+
 `--plugin`: use name of plugin, enter plugin inputs separated by commas (see below for possible options)
 
 For optimal performance, we suggest running VEP offline with a local Ensembl cache. For documentation on getting VEP to run faster please visit http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
