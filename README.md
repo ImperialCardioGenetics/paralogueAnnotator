@@ -10,7 +10,7 @@ Previous publications:
 - [Paralogue annotation identifies novel pathogenic variants in patients with Brugada syndrome and catecholaminergic polymorphic ventricular tachycardia](http://jmg.bmj.com/content/early/2013/10/17/jmedgenet-2013-101917.full)  
 
 
-##### How to run VEP with perl plugin:
+#### How to run VEP with perl plugin:
 
 General command line usage are as follows. 
 ```
@@ -19,18 +19,25 @@ perl -I [directory of plugin] [directory of installed VEP] --force_overwrite --v
 
 #### What the arguments indicate:
 
-`-I`: needed to point to location of the plugin (adding to @INC)<br/>
-`--force_overwrite`: allows you to overwrite the output file<br/>
-`--vcf`: the format of the input file<br/>
-`--offline` & `--cache`: both attempt to use the cache, although the offline mode will override when it can't access Compara data<br/>
-`--dir_cache`: location of our data cache<br/>
-`-i`: input file<br/>
-`-o`: output file<br/>
-`--plugin`: use name of plugin, enter plugin inputs separated by commas (see below for possible options)<br/>
+`-I`: needed to point to location of the plugin (adding to @INC)
+
+`--force_overwrite`: allows you to overwrite the output file
+
+`--vcf`: the format of the input file
+
+`--offline` & `--cache`: both attempt to use the cache, although the offline mode will override when it can't access Compara data
+
+`--dir_cache`: location of our data cache
+
+`-i`: input file
+
+`-o`: output file
+
+`--plugin`: use name of plugin, enter plugin inputs separated by commas (see below for possible options)
 
 For optimal performance, we suggest running VEP offline with a local Ensembl cache. For documentation on getting VEP to run faster please visit http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
 
-### Additional `--plugin` options:
+#### Additional `--plugin` options:
 
 `[--plugin ParalogueAnnotation]`(_default_) or `[--plugin ParalogueAnnotation,variants,damaging]`: VEP plugin will run in `variant` mode, outputting damaging variants that appear in every paralogue's equivalent location
 
@@ -45,7 +52,7 @@ perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offli
 (_VEP version 90 used in example above_)
 
 
-*in location mode (option=`paraloc`) the Paralogue_Vars info field gives the following information:
+In location mode (option=`paraloc`) the Paralogue_Vars info field gives the following information:
 
     ParaSym: Symbol of Paralogue Gene
     ParaChr: Chromosome of Paralogue Gene
@@ -61,7 +68,7 @@ perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offli
     example of "paraloc" output for variant chr3:38630420 (in SCN5A)
     |SCN10A:chr3_38792157-38792159:V:V:REFID=1|
 
-*in variant mode (option=`variants`) the Paralogue_Vars info field gives the following information:
+In variant mode (option=`variants`) the Paralogue_Vars info field gives the following information:
 
     ParaSym: Symbol of Paralogue Gene
     ParaChr: Chromosome of Paralogue Gene
@@ -79,10 +86,8 @@ perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offli
     example of "variants" output for variant chr3:38630420 (in SCN5A)
     |SCN10A:chr3_38792158:rs202143516:REFID=1:V/I:V/G|
 
-*in paraloc mode there will be only one output per paralogue gene; in variant mode there may by multiple variants (and therefore outputs) per gene
+In `paraloc` mode there will be only one output per paralogue gene; in `variants` mode there may by multiple variants (and therefore outputs) per gene.
 
-*paralogue variants that are output from this plugin come from dbSNP (which includes ClinVar variants) and HGMD
-    variants beginning with "rs" come from dbSNP
-    variants beginning with "C" come from HGMD
+Paralogue variants that are output from this plugin come from dbSNP (which includes ClinVar variants) and HGMD: variants beginning with "rs" come from dbSNP; variants beginning with "C" come from HGMD.
 
-*the "damaging" option shows variants that have *at least* one annotation as "damaging" in the ensembl database
+The `damaging` option shows variants that have *at least* one annotation as "damaging" in the ensembl database.
