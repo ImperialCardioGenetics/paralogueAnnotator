@@ -14,7 +14,10 @@ Previous publications:
 
 General command line usage are as follows. 
 ```
-perl -I [directory of plugin] [directory of installed VEP] --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] -i [input file path] -o [output file path] --plugin ParalogueAnno_plugin_cleanup
+perl -I [directory of plugin] [directory of installed VEP] \
+    --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] \
+    -i [input file path] -o [output file path] \
+    --plugin ParalogueAnno_plugin_cleanup
 ```
 
 ### What the arguments indicate:
