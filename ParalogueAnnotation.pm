@@ -11,6 +11,7 @@ use strict;
 use warnings;
 
 use Bio::EnsEMBL::Registry;
+Bio::EnsEMBL::Registry->set_reconnect_when_lost();
 use Bio::LocatableSeq;
 use Bio::EnsEMBL::TranscriptMapper;	
 
