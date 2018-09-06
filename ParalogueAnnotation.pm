@@ -67,7 +67,7 @@ sub new {
 		$self->{config}->{hg_adaptor} = $reg->get_adaptor("Human","Core","Gene"); 
 		$self->{config}->{slice_adaptor} = $reg->get_adaptor("Human", "Core", "Slice");
 		$self->{config}->{transcript_adaptor} = $reg->get_adaptor("Human", "Core", "Transcript");
-	  $self->{config}->{variationfeature_adaptor} = $reg->get_adaptor("Human", "Variation", "Variationfeature");
+	  	$self->{config}->{variationfeature_adaptor} = $reg->get_adaptor("Human", "Variation", "Variationfeature");
 		$self->{config}->{transcriptvariation_adaptor} = $reg->get_adaptor("Human", "Variation", "TranscriptVariation");
 		$self->{config}->{genemember_adaptor} = $reg->get_adaptor("Multi", "compara", "GeneMember");
 		$self->{config}->{homology_adaptor} = $reg->get_adaptor('Multi', 'compara', 'Homology');
@@ -79,7 +79,7 @@ sub run {
 
 	my ($self, $tva) = @_;
 	my $result = "";
-  return {} unless grep {$_->SO_term eq 'missense_variant'} @{$tva->get_all_OverlapConsequences};
+ 	return {} unless grep {$_->SO_term eq 'missense_variant'} @{$tva->get_all_OverlapConsequences};
 	
 	my $btv = $tva->base_transcript_variation();
 	my $tv = $tva->transcript_variation;
@@ -90,10 +90,10 @@ sub run {
 		#Define adaptors
     my $genome_db_adaptor = $self->{config}->{genome_db_adaptor};
   	my $hg_adaptor = $self->{config}->{hg_adaptor}; 
-		my $slice_adaptor = $self->{config}->{slice_adaptor};
-		my $transcript_adaptor = $self->{config}->{transcript_adaptor};
-	  my $variationfeature_adaptor = $self->{config}->{variationfeature_adaptor};
-		my $transcriptvariation_adaptor = $self->{config}->{transcriptvariation_adaptor};
+	my $slice_adaptor = $self->{config}->{slice_adaptor};
+	my $transcript_adaptor = $self->{config}->{transcript_adaptor};
+	my $variationfeature_adaptor = $self->{config}->{variationfeature_adaptor};
+	my $transcriptvariation_adaptor = $self->{config}->{transcriptvariation_adaptor};
     my $genemember_adaptor = $self->{config}->{genemember_adaptor};
     my $homology_adaptor = $self->{config}->{homology_adaptor};
 
@@ -220,11 +220,14 @@ sub run {
 					$fullseq{$para_gene} = $simplealign->get_seq_by_id($ENSPid{$para_gene});	
 					my ($coord) = $trmapper{$basegene}->genomic2pep($bp_input, $bp_input, $strand{$basegene}); #when list has one element how to extract?
  					$peptide{$basegene} = $coord->start;
-          my $num_residues = $simplealign->num_residues;
-          next if ($peptide{$basegene} > $num_residues);
+          			my $num_residues = $simplealign->num_residues;
+          			next if ($peptide{$basegene} > $num_residues);
  					$col = $simplealign->column_from_residue_number($ENSPid{$basegene}, $peptide{$basegene});
-          next if (!$col);
- 					$peptide_coord{$para_gene} = $fullseq{$para_gene}->location_from_column($col);	
+         			next if (!$col);
+         			next if (!defined $col);
+          			next if (!defined $fullseq{$para_gene});
+ 					$peptide_coord{$para_gene} = $fullseq{$para_gene}->location_from_column($col);
+ 					next if (!defined $peptide_coord{$para_gene});
  					$peptide{$para_gene} = $peptide_coord{$para_gene}->start; 
  					my ($var) = $trmapper{$para_gene}->pep2genomic($peptide{$para_gene}, $peptide{$para_gene});
  					my $codon_start = $var->start;
