@@ -3,7 +3,7 @@ Patch notes:
 7/8/18 
 Added line 14: 
 ```
-Bio::EnsEMBL::Registry->set_reconnect_when_lost();
+Bio::EnsEMBL::Registry->set_reconnect_when_lost(1);
 ```
 to ensure connection to Compara is not lost due to inactivity.
 
