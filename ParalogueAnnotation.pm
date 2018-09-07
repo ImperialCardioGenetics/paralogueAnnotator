@@ -95,6 +95,7 @@ sub run {
 	my $variationfeature_adaptor = $self->{config}->{variationfeature_adaptor};
 	my $transcriptvariation_adaptor = $self->{config}->{transcriptvariation_adaptor};
     my $genemember_adaptor = $self->{config}->{genemember_adaptor};
+    $genemember_adaptor->dbc->disconnect_if_idle;
     my $homology_adaptor = $self->{config}->{homology_adaptor};
 
 		#Define arrays and hashes
