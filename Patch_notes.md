@@ -19,4 +19,10 @@ next if (!defined $fullseq{$para_gene});
 Added line 230:
 ```
 next if (!defined $peptide_coord{$para_gene});
-111
+```
+
+7/9/18
+Added line 98:
+```
+$genemember_adaptor->dbc->disconnect_if_idle;
+```
