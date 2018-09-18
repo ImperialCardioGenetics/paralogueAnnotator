@@ -9,6 +9,16 @@ Previous publications:
 - [Paralogous annotation of disease-causing variants in Long QT syndrome genes](http://onlinelibrary.wiley.com/doi/10.1002/humu.22114/abstract)  
 - [Paralogue annotation identifies novel pathogenic variants in patients with Brugada syndrome and catecholaminergic polymorphic ventricular tachycardia](http://jmg.bmj.com/content/early/2013/10/17/jmedgenet-2013-101917.full)  
 
+### Installation:
+
+Install Ensembl's [VEP](https://www.ensembl.org/info/docs/tools/vep/script/vep_download.html) accordingly.
+
+##### Trouble Shooting notes:
+Perl modules `DBI` and `DBD::mysql` may not be installed in recognised directory paths when using `cpanm` if there are multiple perl versions on the system. Recommend using [Perlbrew](https://perlbrew.pl/) to manage and switch between different versions of perl. Then try installing modules directly via:
+```
+perl -MCPAN -e 'install DBD::mysql'
+perl -MCPAN -e 'install DBI'
+```
 
 ### How to run VEP with perl plugin:
 
