@@ -9,16 +9,30 @@ Previous publications:
 - [Paralogous annotation of disease-causing variants in Long QT syndrome genes](http://onlinelibrary.wiley.com/doi/10.1002/humu.22114/abstract)  
 - [Paralogue annotation identifies novel pathogenic variants in patients with Brugada syndrome and catecholaminergic polymorphic ventricular tachycardia](http://jmg.bmj.com/content/early/2013/10/17/jmedgenet-2013-101917.full)  
 
-### Installation:
+### Installation and setup:
 
 Install Ensembl's [VEP](https://www.ensembl.org/info/docs/tools/vep/script/vep_download.html) accordingly.
 
-##### Trouble Shooting notes:
-Perl modules `DBI` and `DBD::mysql` may not be installed in recognised directory paths when using `cpanm` if there are multiple perl versions on the system. Recommend using [Perlbrew](https://perlbrew.pl/) to manage and switch between different versions of perl. Then try installing modules directly via:
+**Trouble Shooting notes:**
+Perl modules `DBI` and `DBD::mysql` may not be installed in recognised directory paths when using `cpanm` if there are multiple perl versions on the system you're using. We recommend using [Perlbrew](https://perlbrew.pl/) to manage and switch between different versions of perl. Then try installing modules directly via:
 ```
 perl -MCPAN -e 'install DBD::mysql'
 perl -MCPAN -e 'install DBI'
 ```
+
+Make sure the perl and perl API environments are setup correctly before running, especially on systems that do not permanently save user profiles. For example, this can be done by either typing into bash command line the following:
+```
+PERL5LIB=${PERL5LIB}:/home/user/BioPerl-1.6.924
+PERL5LIB=${PERL5LIB}:/home/user/ensembl/modules
+PERL5LIB=${PERL5LIB}:/home/user/ensembl-compara/modules
+PERL5LIB=${PERL5LIB}:/home/user/ensembl-variation/modules
+PERL5LIB=${PERL5LIB}:/home/user/ensembl-funcgen/modules
+PERL5LIB=${PERL5LIB}:/home/user/.cpanm
+PERL5LIB=${PERL5LIB}:/home/user/.cpan/build
+export PERL5LIB
+```
+Or by creating a `.bashrc` file in your home directory with the above and running `source .bashrc`. Change `/home/user/` to any appropriate installed directories if required.
+
 
 ### How to run VEP with perl plugin:
 
