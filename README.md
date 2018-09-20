@@ -41,7 +41,7 @@ General command line usage are as follows.
 perl -I [directory of plugin] [directory of installed VEP] \
     --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] \
     -i [input file path] -o [output file path] \
-    --plugin ParalogueAnnotation
+    --plugin ParalogueAnnotation (--port [port number])
 ```
 
 ### What the arguments indicate:
@@ -61,6 +61,8 @@ perl -I [directory of plugin] [directory of installed VEP] \
 `-o`: output file
 
 `--plugin`: use name of plugin, enter plugin inputs separated by commas (see below for possible options)
+
+`--port`(optional): use `--port 3337` if using GRCh37 genome coordinates. Default is GRCh38.
 
 For optimal performance, we suggest running VEP offline with a local Ensembl cache. For documentation on getting VEP to run faster please visit http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
 
