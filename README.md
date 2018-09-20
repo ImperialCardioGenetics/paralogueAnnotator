@@ -41,7 +41,7 @@ General command line usage are as follows.
 perl -I [directory of plugin] [directory of installed VEP] \
     --force_overwrite --vcf --offline --cache --dir_cache [directory of cache] \
     -i [input file path] -o [output file path] \
-    --plugin ParalogueAnnotation (--port [port number])
+    --plugin ParalogueAnnotation --assembly [assebmly build] --port [port number]
 ```
 
 ### What the arguments indicate:
@@ -62,7 +62,9 @@ perl -I [directory of plugin] [directory of installed VEP] \
 
 `--plugin`: use name of plugin, enter plugin inputs separated by commas (see below for possible options)
 
-`--port`(optional): use `--port 3337` if using GRCh37 genome coordinates. Default is GRCh38.
+`--assembly`: indicates the assembly build of the genomic coordinates of input vcf. Use either `GRCh38` or `GRCh37`. If not specified then `GRCh38` is used. If using `GRCh37` then must be used with `--port 3337` (see below).
+
+`--port`: use `--port 3337` if using GRCh37 genome coordinates in order for compara to also use GRCh37 coordinates. If no port is specified then default GRCh38 is used.
 
 For optimal performance, we suggest running VEP offline with a local Ensembl cache. For documentation on getting VEP to run faster please visit http://www.ensembl.org/info/docs/tools/vep/script/vep_other.html
 
@@ -76,7 +78,7 @@ For optimal performance, we suggest running VEP offline with a local Ensembl cac
 
 For example:
 ```
-perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offline --cache --dir_cache /home/user -i /home/user/input_file.vcf -o /home/user/output_file.out --plugin ParalogueAnno_plugin_cleanup
+perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offline --cache --dir_cache /home/user -i /home/user/input_file.vcf -o /home/user/output_file.out --plugin ParalogueAnno_plugin_cleanup --assembly GRCh38
 ```
 (_VEP version 90 used in example above_)
 
