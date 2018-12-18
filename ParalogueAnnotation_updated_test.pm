@@ -226,8 +226,10 @@ sub run {
 				$fullseq{$para_gene} = $simplealign->get_seq_by_id($ENSPid{$para_gene});	
 				my ($coord) = $trmapper{$basegene}->genomic2pep($bp_input, $bp_input, $strand{$basegene}); #when list has one element how to extract?
 				$peptide{$basegene} = $coord->start;
+
 				my $seq = $simplealign->get_seq_by_id($ENSPid{$basegene});
 				my $num_residues = ( $seq =~ s/[A-Za-z]//g );
+				
 				next if ($peptide{$basegene} > $num_residues);
 				$col = $simplealign->column_from_residue_number($ENSPid{$basegene}, $peptide{$basegene});
 				next if (!$col);
