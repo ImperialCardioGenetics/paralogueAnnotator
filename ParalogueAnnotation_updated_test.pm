@@ -1,4 +1,4 @@
-package ParalogueAnnotation;
+package ParalogueAnnotation_updated_test;
 #APIs installed this way will automatically be on the release/78 branch.
 #how to look at only missense?
 #test that all variables are actually used
@@ -229,7 +229,7 @@ sub run {
 
 				my $seq = $simplealign->get_seq_by_id($ENSPid{$basegene});
 				my $num_residues = ( $seq =~ s/[A-Za-z]//g );
-				
+
 				next if ($peptide{$basegene} > $num_residues);
 				$col = $simplealign->column_from_residue_number($ENSPid{$basegene}, $peptide{$basegene});
 				next if (!$col);
