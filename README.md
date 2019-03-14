@@ -78,7 +78,7 @@ For optimal performance, we suggest running VEP offline with a local Ensembl cac
 
 For example:
 ```
-perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offline --cache --dir_cache /home/user -i /home/user/input_file.vcf -o /home/user/output_file.out --plugin ParalogueAnno_plugin_cleanup --assembly GRCh38
+perl -I /home/user /data/Install/ensembl-vep/vep --force_overwrite --vcf --offline --cache --dir_cache /home/user -i /home/user/input_file.vcf -o /home/user/output_file.out --plugin ParalogueAnnotation --assembly GRCh38
 ```
 (_VEP version 90 used in example above_)
 
