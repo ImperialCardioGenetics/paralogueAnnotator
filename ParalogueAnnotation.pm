@@ -47,6 +47,11 @@ sub new {
     $self->{output} = $params->[1] || 'damaging';
     $self->{file} = $params->[2];
  	my $config = $self->{config};
+	$config->{host} = 'cmr000236';
+	$config->{user} = 'e93_ro';
+	$config->{password} = 'e93_ro';
+	$config->{port} = 3306;
+	$config->{db_version} = 93;
 
    	my $reg = 'Bio::EnsEMBL::Registry';
 
