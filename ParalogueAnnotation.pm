@@ -69,11 +69,11 @@ sub new {
 #COMMENT ENSEMBL: cache adaptors and save some time by no regenerating them
 
 	$self->{config}->{genome_db_adaptor} = $reg->get_adaptor('Multi', 'compara', 'GenomeDB');
-	$self->{config}->{hg_adaptor} = $reg->get_adaptor("Homo sapiens","Core","Gene"); 
-	$self->{config}->{slice_adaptor} = $reg->get_adaptor("Homo sapiens", "Core", "Slice");
-	$self->{config}->{transcript_adaptor} = $reg->get_adaptor("Homo sapiens", "Core", "Transcript");
-  	$self->{config}->{variationfeature_adaptor} = $reg->get_adaptor("Homo sapiens", "Variation", "Variationfeature");
-	$self->{config}->{transcriptvariation_adaptor} = $reg->get_adaptor("Homo sapiens", "Variation", "TranscriptVariation");
+	$self->{config}->{hg_adaptor} = $reg->get_adaptor("human","Core","Gene"); 
+	$self->{config}->{slice_adaptor} = $reg->get_adaptor("human", "Core", "Slice");
+	$self->{config}->{transcript_adaptor} = $reg->get_adaptor("human", "Core", "Transcript");
+  	$self->{config}->{variationfeature_adaptor} = $reg->get_adaptor("human", "Variation", "Variationfeature");
+	$self->{config}->{transcriptvariation_adaptor} = $reg->get_adaptor("human", "Variation", "TranscriptVariation");
 	$self->{config}->{genemember_adaptor} = $reg->get_adaptor("Multi", "compara", "GeneMember");
 	$self->{config}->{homology_adaptor} = $reg->get_adaptor('Multi', 'compara', 'Homology');
     return $self;
