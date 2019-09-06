@@ -57,21 +57,34 @@ sub new {
 	$config->{port} = 3306;
 	$config->{db_version} = 93;
 
+   	my $reg = 'Bio::EnsEMBL::Registry';
+
+    if($config->{host}) {
+        $reg->load_registry_from_db(
+            -host       => $config->{host},
+            -user       => $config->{user},
+            -pass       => $config->{password},
+            -port       => $config->{port},
+            -db_version => $config->{db_version},
+            -no_cache   => $config->{no_slice_cache},
+        );
+    }
+
     my $dbCore = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
                     '-host'    => $config->{host},
                     '-user'    => $config->{user},
                     '-pass'    => $config->{password},
                     '-port'    => $config->{port},
-                    '-species' => 'Homo sapiens',
+                    '-species' => 'homo_sapiens',
                     '-group'   => 'core',
                     '-dbname' => 'homo_sapiens_core_93_38');
 
-    my @aliases = ( 'H_Sapiens', 'homo sapiens', 'Homo sapiens',
+    my @aliases = ( 'H_Sapiens', 'homo sapiens', 'homo_sapiens',
              'Homo_Sapiens', 'Homo_sapiens', 'Homo', 'homo',
              'human' );
 
     Bio::EnsEMBL::Utils::ConfigRegistry->add_alias(
-                                           '-species' => 'Homo sapiens',
+                                           '-species' => 'homo_sapiens',
                                            '-alias'   => [@aliases] );
 
     my $dbVar = Bio::EnsEMBL::Variation::DBSQL::DBAdaptor->new(
@@ -98,25 +111,12 @@ sub new {
 #                                             '-species' => 'Compara93',
 #                                             '-alias'   => [@aliases]);
 
-   	my $reg = 'Bio::EnsEMBL::Registry';
-
-    if($config->{host}) {
-        $reg->load_registry_from_db(
-            -host       => $config->{host},
-            -user       => $config->{user},
-            -pass       => $config->{password},
-            -port       => $config->{port},
-            -db_version => $config->{db_version},
-            -no_cache   => $config->{no_slice_cache},
-        );
-    }
-
 #COMMENT ENSEMBL: cache adaptors and save some time by no regenerating them
 
 	$self->{config}->{genome_db_adaptor} = $reg->get_adaptor('Multi', 'compara', 'GenomeDB');
-	$self->{config}->{hg_adaptor} = $dbCore->get_adaptor('human', 'Core', 'Gene');
-	$self->{config}->{slice_adaptor} = $dbCore->get_adaptor("human", "Core", "Slice");
-	$self->{config}->{transcript_adaptor} = $dbCore->get_adaptor("human", "Core", "Transcript");
+	$self->{config}->{hg_adaptor} = $dbCore->get_adaptor('homo_sapiens', 'Core', 'Gene');
+	$self->{config}->{slice_adaptor} = $dbCore->get_adaptor('homo_sapiens', "Core", "Slice");
+	$self->{config}->{transcript_adaptor} = $dbCore->get_adaptor('homo_sapiens', "Core", "Transcript");
   	$self->{config}->{variationfeature_adaptor} = $dbVar->get_adaptor("human", "Variation", "Variationfeature");
 	$self->{config}->{transcriptvariation_adaptor} = $dbVar->get_adaptor("human", "Variation", "TranscriptVariation");
 	$self->{config}->{genemember_adaptor} = $reg->get_adaptor("Multi", "compara", "GeneMember");
