@@ -58,10 +58,10 @@ sub new {
 	$config->{db_version} = 93;
 
     my $dbCore = Bio::EnsEMBL::DBSQL::DBAdaptor->new(
-                    '-host'    => $config{host},
-                    '-user'    => $config{user},
-                    '-pass'    => $config{password},
-                    '-port'    => $config{port},
+                    '-host'    => $config->{host},
+                    '-user'    => $config->{user},
+                    '-pass'    => $config->{password},
+                    '-port'    => $config->{port},
                     '-species' => 'Homo sapiens',
                     '-group'   => 'core',
                     '-dbname' => 'homo_sapiens_core_93_38');
@@ -75,20 +75,20 @@ sub new {
                                            '-alias'   => [@aliases] );
 
     my $dbVar = Bio::EnsEMBL::Variation::DBSQL::DBAdaptor->new(
-    				-host => $config{host},
-    				-user => $config{user},
-    				-pass => $config{password},
-    				-port => $config{port},
+    				-host => $config->{host},
+    				-user => $config->{user},
+    				-pass => $config->{password},
+    				-port => $config->{port},
     				-species => 'human',
     				-group => 'variation',
     				-dbname => 'homo_sapiens_variation_93_38');
 
 #
 #   my $dbCmp = Bio::EnsEMBL::Compara::DBSQL::DBAdaptor->new(
-#                   '-host' => $config{host},
-#                   '-user' => $config{user},
-#                   '-pass' => $config{password},
-#                   '-port' => $config{port},
+#                   '-host' => $config->{host},
+#                   '-user' => $config->{user},
+#                   '-pass' => $config->{password},
+#                   '-port' => $config->{port},
 #                   '-species' => 'compara93',
 #                   '-dbname' => 'ensembl_compara_93');
 
