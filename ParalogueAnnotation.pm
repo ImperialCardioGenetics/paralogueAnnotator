@@ -140,18 +140,18 @@ sub run {
 		#Define adaptors
     my $genome_db_adaptor = $self->{config}->{genome_db_adaptor};
   	my $hg_adaptor = $self->{config}->{hg_adaptor}; 
-  	$hg_adaptor->dbc->disconnect_if_idle;
+#  	$hg_adaptor->dbc->disconnect_if_idle;
 	my $slice_adaptor = $self->{config}->{slice_adaptor};
-	$slice_adaptor->dbc->disconnect_if_idle;
+#	$slice_adaptor->dbc->disconnect_if_idle;
 	my $transcript_adaptor = $self->{config}->{transcript_adaptor};
 	my $variationfeature_adaptor = $self->{config}->{variationfeature_adaptor};
-	$variationfeature_adaptor->dbc->disconnect_if_idle;
+#	$variationfeature_adaptor->dbc->disconnect_if_idle;
 	my $transcriptvariation_adaptor = $self->{config}->{transcriptvariation_adaptor};
-	$transcriptvariation_adaptor->dbc->disconnect_if_idle;
+#	$transcriptvariation_adaptor->dbc->disconnect_if_idle;
     my $genemember_adaptor = $self->{config}->{genemember_adaptor};
-    $genemember_adaptor->dbc->disconnect_if_idle;
+#    $genemember_adaptor->dbc->disconnect_if_idle;
     my $homology_adaptor = $self->{config}->{homology_adaptor};
-    $homology_adaptor->dbc->disconnect_if_idle;
+#    $homology_adaptor->dbc->disconnect_if_idle;
 
 	#Define arrays and hashes
 	my @variants = ();
