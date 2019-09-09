@@ -96,31 +96,31 @@ sub new {
     				-group => 'variation',
     				-dbname => 'homo_sapiens_variation_93_38');
 
-#
-#   my $dbCmp = Bio::EnsEMBL::Compara::DBSQL::DBAdaptor->new(
-#                   '-host' => $config->{host},
-#                   '-user' => $config->{user},
-#                   '-pass' => $config->{password},
-#                   '-port' => $config->{port},
-#                   '-species' => 'compara93',
-#                   '-dbname' => 'ensembl_compara_93');
+ 
+    my $dbCmp = Bio::EnsEMBL::Compara::DBSQL::DBAdaptor->new(
+                    '-host' => $config->{host},
+                    '-user' => $config->{user},
+                    '-pass' => $config->{password},
+                    '-port' => $config->{port},
+                    '-species' => 'compara93',
+                    '-dbname' => 'ensembl_compara_93');
 
-#   @aliases = ( 'ensembl_compara_93', 'compara93', 'Compara', 'compara' );
+    @aliases = ( 'ensembl_compara_93', 'compara93', 'Compara', 'compara' );
 
-#   Bio::EnsEMBL::Utils::ConfigRegistry->add_alias(
-#                                             '-species' => 'Compara93',
-#                                             '-alias'   => [@aliases]);
+    Bio::EnsEMBL::Utils::ConfigRegistry->add_alias(
+                                              '-species' => 'Compara93',
+                                              '-alias'   => [@aliases]);
 
 #COMMENT ENSEMBL: cache adaptors and save some time by no regenerating them
 
-	$self->{config}->{genome_db_adaptor} = $reg->get_adaptor('Multi', 'compara', 'GenomeDB');
+	$self->{config}->{genome_db_adaptor} = $dbCmp->get_adaptor('Multi', 'compara', 'GenomeDB');
 	$self->{config}->{hg_adaptor} = $dbCore->get_adaptor('homo_sapiens', 'Core', 'Gene');
 	$self->{config}->{slice_adaptor} = $dbCore->get_adaptor('homo_sapiens', "Core", "Slice");
 	$self->{config}->{transcript_adaptor} = $dbCore->get_adaptor('homo_sapiens', "Core", "Transcript");
   	$self->{config}->{variationfeature_adaptor} = $dbVar->get_adaptor("human", "Variation", "Variationfeature");
 	$self->{config}->{transcriptvariation_adaptor} = $dbVar->get_adaptor("human", "Variation", "TranscriptVariation");
-	$self->{config}->{genemember_adaptor} = $reg->get_adaptor("Multi", "compara", "GeneMember");
-	$self->{config}->{homology_adaptor} = $reg->get_adaptor('Multi', 'compara', 'Homology');
+	$self->{config}->{genemember_adaptor} = $dbCmp->get_adaptor("Multi", "compara", "GeneMember");
+	$self->{config}->{homology_adaptor} = $dbCmp->get_adaptor('Multi', 'compara', 'Homology');
     return $self;
 }
 
@@ -140,7 +140,7 @@ sub run {
 		#Define adaptors
     my $genome_db_adaptor = $self->{config}->{genome_db_adaptor};
   	my $hg_adaptor = $self->{config}->{hg_adaptor}; 
-#  	$hg_adaptor->dbc->disconnect_if_idle;
+# 	$hg_adaptor->dbc->disconnect_if_idle;
 	my $slice_adaptor = $self->{config}->{slice_adaptor};
 #	$slice_adaptor->dbc->disconnect_if_idle;
 	my $transcript_adaptor = $self->{config}->{transcript_adaptor};
@@ -149,9 +149,9 @@ sub run {
 	my $transcriptvariation_adaptor = $self->{config}->{transcriptvariation_adaptor};
 #	$transcriptvariation_adaptor->dbc->disconnect_if_idle;
     my $genemember_adaptor = $self->{config}->{genemember_adaptor};
-#    $genemember_adaptor->dbc->disconnect_if_idle;
+#   $genemember_adaptor->dbc->disconnect_if_idle;
     my $homology_adaptor = $self->{config}->{homology_adaptor};
-#    $homology_adaptor->dbc->disconnect_if_idle;
+#   $homology_adaptor->dbc->disconnect_if_idle;
 
 	#Define arrays and hashes
 	my @variants = ();
